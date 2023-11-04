@@ -1,0 +1,193 @@
+// this is not a normal scss file because of the specifity required to select much of the elements
+@import "@styles/index.scss";
+
+// GLOBAL
+.text-editor {
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+// TOOLBAR ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#toolbar {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-align: center;
+}
+
+.ql-toolbar.ql-snow {
+    border-radius: 2px solid #ccc;
+}
+
+.ql-snow .ql-picker {
+    display: flex;
+    float: left;
+    
+    @media (max-width: 885px) {
+        margin-bottom: 10px;
+    }
+}
+
+
+  // icon colors
+.ql-toolbar .ql-stroke {
+    fill: none;
+    stroke: rgb(197, 197, 197);
+}
+
+.ql-toolbar .ql-fill {
+    fill: #fff;
+    stroke: none;
+}
+
+.ql-toolbar .ql-picker {
+    color: rgb(197, 197, 197);
+}
+
+#toolbar svg rect, 
+#toolbar svg path {
+    fill: none;
+    stroke: rgb(197, 197, 197);
+}
+
+.ql-toolbar .ql-undo polygon, 
+.ql-toolbar .ql-redo polygon {
+    fill: none;
+    stroke: rgb(197, 197, 197);   
+}
+
+    // font dropdown color 
+.ql-toolbar .ql-formats .ql-picker .ql-picker-options {
+    color: black;
+}
+
+
+
+// TEXT FIELD ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.text-editor #editor {
+    height: 450px;
+}
+
+// padding of the editor itself
+.ql-editor {
+    padding: 30px;
+}
+
+.ql-container.ql-snow {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: black;
+}
+
+ // pop up windows
+ .ql-tooltip[data-mode="link"] {
+    background-color: black;
+    color: white;
+    box-shadow: none;
+    border: none;
+    border-radius: 10px;
+}
+
+
+// PLACEHOLDER STYLE
+.quill > .ql-container > .ql-editor.ql-blank::before{
+    font-size: 1.2em;
+    color: white;
+    padding-left: 12px;
+}
+
+// FONTS
+.ql-font span[data-label="Arial"]::before {
+    font-family: Arial;
+}
+
+.ql-font span[data-label="Georgia"]::before,
+.ql-font-georgia {
+    font-family: Georgia;
+}
+
+.ql-font span[data-label="Courier New"]::before,
+.ql-font-courier-new {
+    font-family: 'Courier New';
+}
+
+.ql-font span[data-label="Helvetica"]::before,
+.ql-font-helvetica {
+    font-family: Helvetica, sans-serif;
+}
+
+.ql-font span[data-label="Lucida"]::before,
+.ql-font-lucida {
+    font-family: 'Lucida Sans';
+}
+
+
+
+#editor {
+    height: 300px;
+    color: white;
+}
+
+
+
+
+@media (prefers-color-scheme: light) {
+    // TOOLBAR -----------
+    .ql-toolbar .ql-stroke {
+        fill: none;
+        stroke: rgb(62, 62, 62);
+    }
+    
+    .ql-toolbar .ql-fill {
+        fill: #0baee9;
+        stroke: none;
+    }
+    
+    .ql-toolbar .ql-picker {
+        color: $primary;
+    }
+    
+    #toolbar svg rect, 
+    #toolbar svg path {
+        fill: none;
+        stroke: rgb(123, 123, 123);
+    }
+    
+    .ql-toolbar .ql-undo polygon, 
+    .ql-toolbar .ql-redo polygon {
+        fill: none;
+        stroke: rgb(158, 158, 158);   
+    }
+    
+        // font dropdown color 
+    .ql-toolbar .ql-formats .ql-picker .ql-picker-options {
+        color: black;
+    }   
+
+    // EDITOR ----------
+
+    .ql-container.ql-snow {
+        background-color: white;
+    }
+
+    // PLACEHOLDER STYLE
+    .quill > .ql-container > .ql-editor.ql-blank::before{
+        color: rgb(61, 61, 61);
+    }
+
+    #editor {
+        color: black;
+    }
+
+
+    #toolbar:hover, .ql-container.ql-snow:hover {
+        border: 1px solid $primary;;
+    }
+    
+    //  #editor .ql-container:hover + #toolbar {
+    //     border: 2px solid red;
+    // }
+}

@@ -1,0 +1,7 @@
+# Ignore .env files in both client and server folders
+**/.env
+
+# Ignore node_modules directories in both client and server folders
+**/node_modules
+
+.vscode/

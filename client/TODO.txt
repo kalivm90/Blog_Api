@@ -1,0 +1,2 @@
+1. Finish Update Post server route. In postForm.jsx you will need to alter formSubmit to handle the differnces between Create post and Update Post 
+2. Delete Post Implementation

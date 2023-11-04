@@ -1,0 +1,148 @@
+@import "react-quill/dist/quill.snow.css";
+@import "@styles/index.scss";
+
+.post-card {
+    $border-radius: 10px;
+
+
+    background-color: $containerColor;
+    width: 50%;
+    border-radius: $border-radius;
+    box-shadow: -2px 4px 13px rgb(0, 0, 0);
+    margin: 0 auto;
+    cursor: pointer;
+
+    .card-content {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+
+        .card-container-left {
+            flex: 1;
+
+            .card-head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 2em 0 2em;
+            
+                #same-user {
+                    color: gold;
+
+                    span {
+                        font-family: Arial, Helvetica, sans-serif;
+                        color: white;
+                    }
+                }
+
+                p:not(.timestamp) {
+                    color: $primary;
+                }
+
+                .timestamp {
+                    font-weight: 600;
+                }
+            }
+        
+            .card-title {
+                color: rgb(209, 209, 209);
+                padding: 1.3em;
+                padding-bottom: 0;
+
+                h2 {
+                    padding-left: 1em;
+                }
+            }
+        }
+
+        .card-container-right {
+            padding: 30px;
+            margin: 40px;
+            border-radius: 10px;
+            background-color: #484848;
+            overflow: hidden;
+            max-height: 300px;
+
+            .body {
+                .ql-syntax {
+                    background-color: rgb(0, 0, 0);
+                    padding: 20px;
+                }
+                ol, ul {
+                    padding-left: 50px;
+                }
+            }
+
+        }
+    }
+
+    .card-action {
+        // animation for like button in index.scss
+        @extend .likeAnimate; 
+        
+        background-color: black;
+        display: flex;
+        height: 50px;
+        justify-content: space-around;
+        align-content: center;
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+
+        div {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: .8em;
+
+            &:first-child {
+                border-bottom-left-radius: $border-radius;
+            }
+
+            &:last-child {
+                border-bottom-right-radius: $border-radius;
+            }
+
+            &:hover {
+                background-color: rgb(122, 122, 122);
+                color: black;
+                fill: black;
+            }
+        }
+
+    }
+
+
+    @media (prefers-color-scheme: light) {
+        // background-color: #e6e6e6;
+        background-color: #fbfbfb;
+        box-shadow: -2px 4px 13px rgb(173, 173, 173);
+
+
+        .card-content {
+            .card-container-right {
+                background-color: #e6e6e6;
+
+                // text rich display
+                .body {
+                    color: black;
+                    .ql-syntax {
+                        background-color: rgb(69, 69, 69);
+                        color: white;
+                        padding: 20px;
+                    }
+                }
+            }
+        }
+
+        .card-action {
+            // background-color: #fbfbfb;
+            background-color: #f4f4f4;
+
+            div:hover {
+                background-color: #e6e6e6;
+            }
+        }
+    }
+}
+

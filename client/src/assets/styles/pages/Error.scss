@@ -1,0 +1,15 @@
+.Error {
+    text-align: center;
+    
+    img {
+        object-fit: cover;
+        max-width: 100%;
+        height: auto;
+        z-index: 1;
+    }
+    p {
+        font-size: 20px;
+        margin-top: 50px;
+        z-index: 5;
+    }
+}

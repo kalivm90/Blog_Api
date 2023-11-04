@@ -1,0 +1,37 @@
+$animationTime: .3s;
+$spanPadR: 40px;
+
+#googleLogin {
+    background-color: white;
+    color: rgba(0, 0, 0, 0.59);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+
+    img {
+        width: 30px;
+        transition: all $animationTime ease-in;
+    }
+
+    span {
+        flex: 1;
+        padding-right: $spanPadR;
+        opacity: 1;
+        transition: opacity $animationTime ease-in;
+    }
+
+    @media(hover: hover) {
+
+    }
+
+
+    &:hover img {
+        // --btn-width is defnied in the component when it mounts
+        transform: translateX(calc(var(--btn-width) / 2 - 40px));
+    }
+
+    &:hover span {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,24 @@
+.flash {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    padding: 20px;
+    background-color: red;
+
+    p {
+        font-size: 20px;
+    }
+
+    &.message {
+        background-color: green;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .flash {
+        p {
+          color: white;
+        }
+    }
+}

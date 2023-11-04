@@ -1,0 +1,26 @@
+// this file is for reusable css components that can be extended in other classes with @extend (use this in next project)
+// Example 
+
+.flex {
+    display: flex;
+}
+
+.flex-center-row {
+    @extend .flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-center-col {
+    @extend .flex-center-row;
+    flex-direction: column;
+}
+
+
+// EXAMPLE: in another stlyes file ./components/component.scss
+.container {
+    @extend .flex-center-col;
+    background-color: red;
+    font-family: 'Courier New', Courier, monospace;
+}
+

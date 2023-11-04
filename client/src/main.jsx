@@ -1,0 +1,27 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from './context/AuthContext.jsx';
+
+import "@styles/index.scss"
+// quill component style that could appear in a lot of different places inside the app
+import "react-quill/dist/quill.snow.css";
+
+import authRouter from './pages/auth/_index';
+import indexRouter from "./pages/index/_index";
+import blogRouter from './pages/blog/_index.jsx';
+
+const router = createBrowserRouter([
+    ...indexRouter,
+    ...authRouter,
+    ...blogRouter,
+])
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  // comment out React.StrictMode before Prod.
+  // <React.StrictMode>
+    <AuthProvider>
+      <RouterProvider router={router}/>
+    </AuthProvider>
+  // </React.StrictMode>,
+)

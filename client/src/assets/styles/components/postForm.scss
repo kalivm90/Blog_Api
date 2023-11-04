@@ -1,0 +1,163 @@
+@import "@styles/index.scss";
+
+
+.postForm {
+    --formPadTop: 7px;
+    --labelBottomPOS: 1.7em;
+    --labelLeftPOS: .3em;
+    --form-background: rgb(35, 35, 35);
+
+    height: 100%;
+    padding: 30px 0 100px 0;
+
+
+    .content {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 0 50px;
+
+        form {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            
+            padding: 50px;
+            width: 80%;
+
+            border-radius: .9em;
+            margin-top: 1.5em;
+            // background-color: var(--form-background);
+            background-color: $containerColor;
+            
+            .form-title {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                margin-bottom: 30px;
+                gap: 20px;
+
+
+                h2 {
+                    align-self: flex-start;
+                    font-size: 34px;
+                }
+
+                p {
+                    color: grey;
+                    font-size: 16px;
+                    padding-left: 2px;
+                }
+            }
+            
+            .field-wrapper {
+                width: 90%;
+                display: flex;
+                flex-direction: column;
+            
+                
+
+                .form-field {
+                    position: relative;
+                    border: 2px solid rgb(173, 173, 173);
+                    padding: var(--formPadTop) 5px 5px 5px;
+                    display: flex;
+
+                    &:focus-within {
+                        border-color: $primary;
+                        
+                        label {
+                            color: white;
+                        }
+                    }
+
+                    & label[for='body'] {
+                        bottom: calc(var(--form-field-height) - var(--formPadTop));
+                    }
+
+                    input {
+                        border: none;
+                        background-color: var(--form-background);
+                        width: 100%;
+                        height: 100%;
+                        padding: 0 10px;
+                        font-size: 16px;
+                        font-weight: 100;
+                        color: rgb(229, 229, 229);
+                        font-family: Arial, Helvetica, sans-serif;
+        
+                        &:focus {
+                            border: none;
+                            outline: none;
+                        }
+                    }
+
+                    label {
+                        position: absolute;
+                        padding: 0 5px;
+                        color: rgb(162, 162, 162);
+                        bottom: var(--labelBottomPOS);
+                        left: var(--labelLeftPOS);
+                        background-color: var(--form-background);
+                    }
+                }
+
+                & .form-error {
+                    padding-top: 4px;
+                    color: red;
+                }
+                
+            }
+
+            @media (max-width: 717px) {
+                width: 500px;
+            }
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        --form-background: #f4f4f4;
+
+        .content {
+
+            form {
+                background-color: var(--form-background);
+
+                .field-wrapper {
+
+                    .form-field {
+                        border: 1px solid #ccc;
+
+                        &:focus-within, &:hover {
+                            border-color: $primary;
+                            
+                            label {
+                                color: black;
+                                font-weight: 600;
+                            }
+                        }
+
+                        label {
+                            color: $primary;
+                            font-weight: 600;
+                        }
+
+                        input {
+                            color: rgb(37, 37, 37);
+                        }
+                    }
+
+                }
+
+                input {
+                    background-color: var(--form-background);
+                }
+            }
+        }
+    }
+}
