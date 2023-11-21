@@ -37,33 +37,20 @@ nav {
         }
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 1100px) {
         .title {
             flex: 1;
-            margin-right: 50px;
-        }
-        .links {
-            padding-right: 10px;
-            gap: 20px;
-            font-size: 14px;
         }
     }
 
-    @media (max-width: 757px) {
-        .links {
-            flex: 2;
-        }
-    }
-
-    @media (max-width: 420px) {
+    @media (max-width: 700px) {
         .title {
-            gap: 5px;
-            h2 {
-                font-size: 22px;
-            }
-            img {
-                width: 30px;
-            }
+            flex: .8;
+        } 
+        .links {
+            font-size: 14px;
+            padding-right: 0px;
         }
     }
+
 }

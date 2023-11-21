@@ -39,7 +39,6 @@ const PostCard = ({post, authData}) => {
     useState(() => {
         setPostId(post._id);
         setIsLiked(post?.likedByUser)
-        // console.log("POST", post, authData.id);
     }, [])
 
 
@@ -49,12 +48,18 @@ const PostCard = ({post, authData}) => {
             <div className="card-content" onClick={() => redirect(`/blog/${postId}/view`)}>
                 <div className="card-container-left">
                     <div className="card-head">
-                        {authData.username === post.author.username ? (
-                            <p id="same-user" className="username">{post.author.username} <span id="white">(self)</span></p>
+
+                        {authData.user.username === post.author.username ? (
+                            <p id="same-username" className="username">
+                                {post.author.username} 
+                                <span id="white">(self)</span>
+                            </p>
                         ) : (
-                            <p className="username">{post.author.username}</p>
+                            <p id="dif-username">
+                                {post.author.username}
+                            </p>
                         )}
-                        {/* <p>{post.author.username}</p> */}
+
                         {/* LINK PROFILE HREF FROM MONGO METHOD */}
                         <p className="timestamp">{post.timestamp_format}</p>
                     </div>

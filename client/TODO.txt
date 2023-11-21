@@ -1,2 +1,11 @@
-1. Finish Update Post server route. In postForm.jsx you will need to alter formSubmit to handle the differnces between Create post and Update Post 
-2. Delete Post Implementation
+1. Pagination for dashboard.
+2. Skelton styles for when pages are loading for dashboard and viewPost with skeleton module
+3. Convert more of the pages to "light mode"
+
+
+
+STUFF DONE
+---------------------------------------------------------------------------------------------
+
+1. Implemented new way of sending and recieving requests from the server to implement status code (should have started this way), refined the styles for smaller screens. 
+2. Added modal for deletion of posts

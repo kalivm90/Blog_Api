@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const {body, validationResult} = require("express-validator");
 
-const {verifyRoute} = require("../middleware/jwtMiddleware.js");
 const {signJWT, verifyJWT} = require("../util/jwtUtil.js");
 const Cookie = require("../util/createCookie.js");
 const User = require("../models/userModel.js");
@@ -55,19 +54,20 @@ exports.register_post = [
         })
 
         if (existinUsername) {
-            res.json({
+            res.status(409).json({
                 success: false,
-                message: "Username already exists",
+                error: "Username already exists.",
               });
         } else if (!errors.isEmpty()) {
-            res.json({
+            res.status(400).json({
+                success: false,
+                error: "Field validation failed.",
                 user: {
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     username: req.body.username,
                 },
                 errors: errors.array(),
-                success: false,
             })
         } else {
             await newUser.save();
@@ -78,7 +78,7 @@ exports.register_post = [
             const cookie = new Cookie(res, signedToken);
             cookie.attachCookie();
 
-            return res.json({
+            return res.status(200).json({
                     success: true,
                     message: "Successful Registeration",
                     user: {
@@ -107,15 +107,16 @@ exports.login_post = [
         const user = await User.findOne({username: req.body.username}).exec();
 
         if (!errors.isEmpty()) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
+                error: "Field validation failed.",
                 username: req.body.username,
                 errors: errors.array()
             })
         } else if (!user) {
-            return res.json({
+            return res.status(409).json({
                 success: false,
-                message: "User does not exist",
+                error: "User does not exist",
             })
         }
 
@@ -128,7 +129,7 @@ exports.login_post = [
             cookie.attachCookie();
 
 
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 message: "Login Successful",
                 user: {
@@ -139,30 +140,13 @@ exports.login_post = [
             });
 
         } else if (user?.googleId) {
-            res.status(401).json({success: false, message: "This is a Goolge profile, please login with Google."})
+            res.status(401).json({success: false, error: "This is a Goolge profile, please login with Google."})
         } else { 
-            res.status(401).json({success: false, message: "You entered the wrong password"});
+            res.status(401).json({success: false, error: "You entered the wrong password"});
         }
     })
 ]
 
-// update username
-exports.updateUsername_get = asyncHandler(async (req, res) => {
-    const verify = await verifyJWT(req.token);
-
-    if (!verify.success) {
-        return res.json({ 
-            success: false, 
-            message: "Unauthorized",
-        });
-    }
-
-
-    res.json({
-        success: true,
-        message: "Verification complete",
-    })
-})
 
 // update username post
 exports.updateUsername_put = [
@@ -175,7 +159,7 @@ exports.updateUsername_put = [
         const errors = validationResult(req); 
 
         if (!errors.isEmpty()) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 errors: errors.array()
             })
@@ -184,7 +168,7 @@ exports.updateUsername_put = [
         const verify = await verifyJWT(req.token);
 
         if (!verify.success) {
-            return res.json({ 
+            return res.status(401).json({ 
                 success: false, 
                 message: "Unauthorized",
             });
@@ -206,7 +190,7 @@ exports.updateUsername_put = [
             cookie.attachCookie();
 
 
-            res.json({
+            res.status(200).json({
                 success: true,
                 message: "Login Succesful",
                 user: {
@@ -218,17 +202,19 @@ exports.updateUsername_put = [
     })
 ]
 
+
+
 // check is username exists in forms
 exports.checkUsername_post = asyncHandler(async (req, res) => {
     const existingUsername = await User.findOne({username: req.body.value}).exec();
 
     if (existingUsername) {
-        res.json({
+        res.status(409).json({
             success: false, 
             message: "Username Taken",
         })
     } else {
-        res.json({
+        res.status(200).json({
             success: true,
             message: "Username Available"
         })
@@ -242,12 +228,12 @@ exports.verifyGoogleUser_get = asyncHandler(async (req, res) => {
     const user = await User.findById(verify.authData.userPayload.id);
 
     if (!verify.success || user === null) {
-        return res.json({ 
+        return res.status(400).json({ 
             success: false, 
             error: "Something went wrong, please login again.",
         });
     } else {
-        return res.json({
+        return res.status(200).json({
             success: true, 
             authData: verify.authData,
             tokenExp: process.env.JWT_EXPIRATION,

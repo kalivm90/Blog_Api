@@ -25,21 +25,19 @@ const GoogleCallback = () => {
 
             const response = await fetchApi(url, "GET");
 
-            if (response?.success) {
-
-                const estimatedExpiration = getDateOfExpiration(response.tokenExp);
+            if (response.res.ok && response.payload.success) {
+                const estimatedExpiration = getDateOfExpiration(response.payload.tokenExp);
 
                 const authObj = {
                     isAuthenticated: true,
-                    user: response.authData.userPayload,
+                    user: response.payload.authData.userPayload,
                     timeOfExp: estimatedExpiration,
                 }
 
                 updateAuthData(authObj);
-                redirect("/blog/dashboard");
-                
+                redirect("/blog/dashboard?page=1");
             } else {
-                redirect(`/auth/login/error=${response?.error}`)
+                redirect(`/auth/login/error=/googleCallback: ${response?.payload?.error}`)
                 console.log("Debug: GoogleCallback at route /auth/googleCallback")
             }
         }
@@ -50,7 +48,7 @@ const GoogleCallback = () => {
 
     return (
         <Layout>
-            <div className="googleCallback" style={{height: "100vh"}}>
+            <div className="googleCallback" style={{height: "100vh", padding: "4em"}}>
                 <h2>Verifying with Google...</h2>
             </div>
         </Layout>

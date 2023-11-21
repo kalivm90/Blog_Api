@@ -8,15 +8,12 @@ const UpdatePost = () => {
     const {postId} = useParams();
 
     return (
-        <Layout>
+        <Layout protectedRoute={true}>
             <PostForm
-                title="Update Post"
+                type="Update"
                 message="need to make some changes?"
                 url={`/posts/${postId}/update`}
             />
-            {/* <div className="UpdatePost">
-                <p>Update post TODO with Id: {postId}</p>
-            </div> */}
         </Layout>
     )
 }

@@ -9,49 +9,87 @@ import "react-loading-skeleton/dist/skeleton.css"
 import Layout from "@components/layout";
 import PostCard from "@components/postCard.jsx";
 import "@styles/pages/Dashboard.scss";
- 
+
+// test
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
 // NEED TO ADD LOGOUT TO DELETE LOCAL STORAGE IF AUTH FAILS
 
 const Dashboard = () => {
     const redirect = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
-    const {authData, updateAuthData, logout, getAuthData} = useAuth();
+    const {logout, getAuthData} = useAuth();
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const [posts, setPosts] = useState({});
 
+    const authInfo = getAuthData();
+
+
+    const fetchPosts = async (page) => {
+        const url = `${import.meta.env.VITE_API_PATH}/posts?page=${page}`
+
+        const response = await fetchApi(url, "GET");
+
+        if (response.res.ok) {
+            setPosts(response.payload.posts);
+
+            setTotalPages(response.payload.totalPages);
+
+         } else if (response.res.status === 401) {
+             logout();
+             redirect(`/auth/login?error=/dashboard: ${response?.payload?.error || "Something went wrong."}`);
+         }
+
+         setIsLoading(false);
+
+         console.log(response);
+    };
+
+    // handles change for pagination component 
+    const handleChange = (event, value) => {
+        setCurrentPage(value);
+        redirect(`/blog/dashboard?page=${value}`);
+    };
+
     useEffect(() => {
-        const req = async () => {
-            const url = import.meta.env.VITE_API_PATH + "/posts";
+        fetchPosts(currentPage);
+        console.log(totalPages)
+    }, [currentPage])
 
-            const response = await fetchApi(url, "GET");
 
-            if (response?.success) {
-                setPosts(response.posts);
-            } else {
-                // when the auth fails the storage gets cleared in order to keep the data fresh
-                logout();
-                redirect(`/auth/login?error=${response.error || response.message}`);
-            }
-
-            setIsLoading(false);
-        }
-        req();
-
-    //     // articial load time to test skeleton
-    //     // setTimeout(() => {
-    //     //     req();
-    //     // }, 1000)
-    }, [])
+    useEffect(() => {
+        const handlePopstate = () => {
+          const urlSearchParams = new URLSearchParams(window.location.search);
+          const pageParam = urlSearchParams.get("page");
+          const parsedPage = parseInt(pageParam, 10);
+    
+          if (!isNaN(parsedPage)) {
+            setCurrentPage(parsedPage);
+          }
+        };
+    
+        window.addEventListener("popstate", handlePopstate);
+    
+        return () => {
+          window.removeEventListener("popstate", handlePopstate);
+        };
+      }, []);
 
 
     return (
         <Layout protectedRoute={true}>
             {isLoading ? (
-                <div className="Blog Dashboard loading">
+                <div className="Dashboard loading">
                     <h2>Getting posts...</h2>
                 </div>
             ) : (
-                <div className="Blog Dashboard">
+                <div className="Dashboard">
 
                     {/* main section */}
                     <div className="dashboard-container">
@@ -59,7 +97,7 @@ const Dashboard = () => {
                         <header>
 
                             <div className="dash-title">
-                                <h2>Welcome {authData.username}</h2>
+                                <h2>Welcome {authInfo.user.username}</h2>
                                 <p>
                                     Here you can review your posts and profile.
                                 </p>
@@ -69,8 +107,10 @@ const Dashboard = () => {
                         </header>
                         <hr />
                         <div className="dash-content">
-                            {posts === null ? (
-                                <p>No posts at the moment...</p>
+                            {posts.length === 0 ? (
+                                <div className="no-posts">
+                                    <h2>No posts at the moment, feel free to create one!</h2>
+                                </div>
                             ) : (
                                 <div className="post-container">
                                     {posts.map(post => {
@@ -79,7 +119,7 @@ const Dashboard = () => {
                                                 // not a prop but a react key for id 
                                                 key={post._id}
                                                 post={post}
-                                                authData={authData}
+                                                authData={authInfo}
                                             ></PostCard>
                                         )
                                     })}
@@ -88,6 +128,18 @@ const Dashboard = () => {
                         </div>
                     </div>
                     
+
+                    <div className="pagination-wrapper">
+                        <Typography>Page: {currentPage}</Typography>
+                        <Stack spacing={2}>
+                            <Pagination 
+                                count={totalPages} 
+                                color="primary" 
+                                page={currentPage}
+                                onChange={handleChange}
+                            />
+                        </Stack>
+                    </div>
 
                 </div>
             )}
@@ -103,3 +155,28 @@ const Dashboard = () => {
 }
 
 export default Dashboard;
+
+
+    // useEffect(() => {
+    //     const req = async () => {
+    //         const url = import.meta.env.VITE_API_PATH + "/posts";
+
+    //         const response = await fetchApi(url, "GET");
+
+    //         if (response.res.ok) {
+    //            setPosts(response.payload.posts);
+    //         } else if (response.res.status === 401) {
+    //             logout();
+    //             redirect(`/auth/login?error=/dashboard: ${response?.payoad?.error}`);
+    //         }
+
+
+    //         setIsLoading(false);
+    //     }
+    //     req();
+
+    // //     // articial load time to test skeleton
+    // //     // setTimeout(() => {
+    // //     //     req();
+    // //     // }, 1000)
+    // }, [])

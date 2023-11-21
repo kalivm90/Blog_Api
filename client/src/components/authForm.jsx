@@ -1,5 +1,3 @@
-// THIS IS ALMOST READY!!!!
-
 import { useState } from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
@@ -20,7 +18,7 @@ import "@styles/components/authForm.scss";
 const AuthForm = ({url, title, fields, method="POST", className}) => {
     const [showPassword, setShowPassword] = useState(false);
 
-    const {authData, updateAuthData, logout} = useAuth();
+    const {updateAuthData, logout} = useAuth();
 
     const redirect = useNavigate();
 
@@ -89,9 +87,8 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
 
             const response = await fetchApi(url, method, fieldValues);
 
-            if (response?.success) {
+            if (response.res.ok) {
                 reset();
-
 
                 const estimatedExpiration = getDateOfExpiration(response.tokenExp);
                 // request has user come as itself rather than in authData since it does not come from passport
@@ -100,18 +97,40 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
                     user: response.user,
                     // date of token expiration
                     timeOfExp: estimatedExpiration,
-                    // added an estimate of how long the token is good for
-                    // tokenExp: response.tokenExp,
                 }
-                console.log(authObj)
                 updateAuthData(authObj)
-                redirect("/blog/dashboard");
+                redirect("/blog/dashboard?page=1");
+            } else if (response.res.status === 400) {
+                console.log("TODO authForm: if validation fails on server although the client side validation should catch it");
             } else {
                 logout();
-                redirect(`/auth/login?error=${response.message || response.error}`)
+                redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
                 redirect(0);
-                console.log("ERROR", response);
             }
+
+            // if (response?.success) {
+            //     reset();
+
+
+                // const estimatedExpiration = getDateOfExpiration(response.tokenExp);
+                // // request has user come as itself rather than in authData since it does not come from passport
+                // let authObj = {
+                //     isAuthenticated: true,
+                //     user: response.user,
+                //     // date of token expiration
+                //     timeOfExp: estimatedExpiration,
+                //     // added an estimate of how long the token is good for
+                //     // tokenExp: response.tokenExp,
+                // }
+                // console.log(authObj)
+                // updateAuthData(authObj)
+                // redirect("/blog/dashboard");
+            // } else {
+                // logout();
+                // redirect(`/auth/login?error=${response.message || response.error}`)
+                // redirect(0);
+                // console.log("ERROR", response);
+            // }
         }
     }
 
@@ -120,16 +139,25 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
         async (e, setError, clearErrors) => {
             const url = import.meta.env.VITE_SERVER_AUTH + "/checkUsername";
             const response = await fetchApi(url, "POST", { value: e });
-            
 
-            if (!response.success) {
+            
+            if (response?.res.ok) {
+                clearErrors("username");
+            } else {
                 setError("username", {
                     type: "manual",
                     message: "Username is already taken",
                 });
-            } else {
-                clearErrors("username");
             }
+
+            // if (!response.success) {
+            //     setError("username", {
+            //         type: "manual",
+            //         message: "Username is already taken",
+            //     });
+            // } else {
+            //     clearErrors("username");
+            // }
         },
         400
     );

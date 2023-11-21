@@ -6,8 +6,9 @@ import PostForm from "../../components/postForm";
 const CreatePost = () => {
 
     return (
-        <Layout>
+        <Layout protectedRoute={true}>
             <PostForm 
+                type="Create"
                 title="Create Post"
                 message="Create a new Blog post!"
                 url="/posts/createPost"

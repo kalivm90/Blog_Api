@@ -2,7 +2,7 @@
 
 .Dashboard {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     &.loading {
         height: 100vh;
@@ -30,11 +30,18 @@
                 align-items: center;
                 margin-right: 44px;
                 margin-top: 4px;
-                // background-color: black;
 
                 // @media (prefers-color-scheme: light) {
                 //     background-color: #ccc;
                 // }
+                @media (max-width: 1200px) {
+                    margin-right: 20px;
+                }
+                @media (max-width: 580px) {
+                    margin-right: 5px;
+                    padding: 15px;
+                    font-size: 15px;
+                }
             }
         }
 
@@ -46,10 +53,67 @@
                 flex-direction: column;
                 gap: 50px;
             }
+
+            .no-posts {
+                // height: 100vh;
+
+                h2 {
+                    padding-top: 50px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    text-align: center;
+                    color: rgb(209, 209, 209);
+                }
+            }
         }
 
         hr {
             margin-top: 10px;
+        }
+    }
+
+
+    .pagination-wrapper {
+
+        // Typography
+        .MuiTypography-root.MuiTypography-body1.css-ahj2mt-MuiTypography-root {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        // pages wit
+        .MuiStack-root.css-1sazv7p-MuiStack-root {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 50px;
+            * {
+                box-shadow: none;
+            }
+    
+            li {
+                
+                button[aria-current="true"] {
+                    border: 2px solid white;
+                }
+        
+                button {
+                    color: white;
+                    width: 40px;
+                    border: 2px solid grey;
+                    box-shadow: none;
+                }
+        
+                &[aria-current="true"] {
+                    border: 2px solid red;
+                    background-color: red;
+                }
+        
+                div {
+                    color: white;
+                }
+            }
         }
     }
 

@@ -15,9 +15,11 @@ const fetchApi = async (url, method, body) => {
   
       const res = await fetch(url, requestOptions);
     
-
       let resJSON = await res.json();
-      return resJSON;
+
+      // returns both the JSON payload and response object
+      return {payload: resJSON, res};
+
     } catch (err) {
       return err;
     }

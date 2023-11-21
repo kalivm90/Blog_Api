@@ -8,10 +8,9 @@ const postController = require("../../controllers/apiV1/postController");
 router.use(verifyRoute);
 
 // get all posts: this is /posts
-router.get("/", postController.post_detail);
+router.get("/", postController.posts_get);
 
 // post create
-router.get("/createPost", postController.post_create_get)
 router.post("/createPost", postController.post_create_post)
 
 // get all specific post 

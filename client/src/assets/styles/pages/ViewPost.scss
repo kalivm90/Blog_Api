@@ -9,6 +9,11 @@ $containerWidth: 70%;
     justify-content: center;
     align-items: center;
 
+    position: relative;
+
+    padding: 4em;
+
+
     h2 {
         width: $containerWidth;
         padding-bottom: 15px;
@@ -33,6 +38,12 @@ $containerWidth: 70%;
             display: flex;
             justify-content: space-between;
             width: 100%;
+
+            .username {
+                display: flex;
+                flex-direction: row;
+                gap: .5em;
+            }
         }
 
         .author-action {
@@ -73,8 +84,8 @@ $containerWidth: 70%;
                     color: $primary;
                 }
             }
-
         }
+
     }
 
     .image-clicked {
@@ -84,5 +95,45 @@ $containerWidth: 70%;
 
     a {
         font-size: 16px;
+    }
+
+
+    @media (max-width: 1150px) {
+        $containerWidth: 90%;
+
+        .content {
+            width: $containerWidth;
+        }
+        h2 {
+            width: $containerWidth;
+        }
+    }
+
+    @media (max-width: 900px) {
+        $containerWidth: 100%;
+        padding: 20px;
+
+        h2 {
+            width: $containerWidth;
+        }
+
+        .content {
+            width: $containerWidth;
+
+            .card-action {
+
+                div {
+                    display: flex;
+                    gap: 10px;
+    
+                    svg {
+                        width: 20px;
+                    }
+                    p {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
     }
 }

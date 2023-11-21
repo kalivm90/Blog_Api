@@ -17,8 +17,9 @@
 }
 
 
+
 // EXAMPLE: in another stlyes file ./components/component.scss
-.container {
+.container-that-i-dont-use {
     @extend .flex-center-col;
     background-color: red;
     font-family: 'Courier New', Courier, monospace;

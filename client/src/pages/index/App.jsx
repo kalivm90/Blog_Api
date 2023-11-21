@@ -25,7 +25,7 @@ function App() {
             <h1>Welcome to Blog Api</h1>
             {authData?.isAuthenticated ? (
               <p>Looks like you are already logged in, go to your
-                <a href="blog/dashboard"> Dashboard</a>
+                <a href="blog/dashboard?page=1"> Dashboard</a>
                 .
               </p>
             ) : (

@@ -1,6 +1,5 @@
 import Dashboard from './Dashboard';
 import CreatePost from './CreatePost';
-import DeletePost from './DeletePost';
 import UpdatePost from './UpdatePost';
 import ViewPost from './ViewPost';
 
@@ -17,10 +16,6 @@ const blogRouter = [
     {
         path: "/blog/createMessage", 
         element: <CreatePost/>
-    },
-    {
-        path: "/blog/:postId/delete",
-        element: <DeletePost/>
     },
     {
         path: "/blog/:postId/update",

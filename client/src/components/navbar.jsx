@@ -26,7 +26,7 @@ const Navbar = () => {
             {authData?.isAuthenticated || authData?.id ? (
                 <div className="links auth">
                     <Link to="/">Home</Link>
-                    <Link to="/blog/dashboard">Dashboard</Link>
+                    <Link to="/blog/dashboard?page=1">Dashboard</Link>
                     <Link to="/profile">Profile</Link>
                     <a href="#" onClick={handleLogout}>Logout</a>  
                 </div>

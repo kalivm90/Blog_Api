@@ -12,32 +12,95 @@ const { body, validationResult } = require("express-validator");
 
 
 // sort by most recent
-exports.post_detail = asyncHandler(async (req, res) => {
+// exports.post_detail = asyncHandler(async (req, res) => {
     
+//     const verify = await verifyJWT(req.token);
+
+//     if (!verify.success) {
+//         // If JWT verification fails, return an error response
+//         return res.status(401).json({ 
+//             success: false, 
+//             error: "Not Authorized, please login.",
+//         });
+//     }
+
+//     const posts = await Post.find()
+//         .populate("author", "username")
+//         .sort({timestamp: -1})
+//         .limit(20)
+//         .exec()
+
+//     const userId = verify.authData.userPayload.id
+
+//     const postsWithVirtuals = posts.map((post) => {
+//         const likedByUser = post.likedByUser(userId);
+
+//         return post.toJSON({
+//             virtuals: true,
+//             // Exclude virtuals for 'author'
+//             transform: (doc, ret) => {
+//                 if (ret.author) {
+//                     delete ret.author.fullname;
+//                     delete ret.author.userObj;
+//                     delete ret.author.id;
+//                 }
+//                 if (ret.likes) {
+//                     delete ret.likes.users;
+//                 }
+//                 ret.likedByUser = likedByUser;
+//                 return ret;
+//             }
+//         });
+//     });
+
+
+//     if (posts.length > 0) {
+//         return res.status(200).json({
+//             success: true, 
+//             posts: postsWithVirtuals,
+//         })
+//     } else {
+//         return res.status(404).json({
+//             success: true, 
+//             message: "No Posts Found",
+//             posts: null,
+//         })
+//     }
+// })
+
+// GET ALL POSTS
+exports.posts_get = asyncHandler(async (req, res) => {
     const verify = await verifyJWT(req.token);
 
     if (!verify.success) {
-        // If JWT verification fails, return an error response
-        return res.json({ 
-            success: false, 
+        return res.status(401).json({
+            success: false,
             error: "Not Authorized, please login.",
         });
     }
 
+    // sending 10 querys at a time
+    const { page = 1, pageSize = 10 } = req.query;
+    const skip = (page - 1) * pageSize;
+
+    // getting total number of pages
+    const totalPostsCount = await Post.countDocuments();
+    const totalPages = Math.ceil(totalPostsCount / pageSize);
+
     const posts = await Post.find()
         .populate("author", "username")
-        .sort({timestamp: -1})
-        .limit(20)
-        .exec()
+        .sort({ timestamp: -1 })
+        .skip(skip)
+        .limit(parseInt(pageSize))
+        .exec();
 
-    const userId = verify.authData.userPayload.id
+    const userId = verify.authData.userPayload.id;
 
     const postsWithVirtuals = posts.map((post) => {
         const likedByUser = post.likedByUser(userId);
 
         return post.toJSON({
             virtuals: true,
-            // Exclude virtuals for 'author'
             transform: (doc, ret) => {
                 if (ret.author) {
                     delete ret.author.fullname;
@@ -49,123 +112,17 @@ exports.post_detail = asyncHandler(async (req, res) => {
                 }
                 ret.likedByUser = likedByUser;
                 return ret;
-            }
+            },
         });
     });
 
+    return res.status(200).json({
+        success: true,
+        posts: postsWithVirtuals,
+        totalPages,
+    });
+});
 
-    if (posts.length > 0) {
-        return res.json({
-            success: true, 
-            posts: postsWithVirtuals,
-        })
-    } else {
-        return res.json({
-            success: true, 
-            message: "No Posts Found",
-            posts: null,
-        })
-    }
-})
-
-
-// CREATE POST GET/POST
-
-// GET
-exports.post_create_get = asyncHandler(async (req, res) => {
-    const verify = await verifyJWT(req.token);
-
-    if (!verify.success) {
-        return res.json({ 
-            success: false, 
-            error: "Not Authorized, please login.",
-        });
-    } else {
-        return res.json({
-            success: true, 
-            message: "Verified.",
-        })
-    }
-
-    // const user = await User.findById(verify.authData.userPayload.id, "blogOwner username").exec();
-
-    // if (user === null) {
-    //     return res.json({
-    //         success: false,
-    //         message: "Could not find user",
-    //     })
-    // } else {
-    //     return res.json({
-    //         success: true, 
-    //         user,
-    //     })
-    // }
-})
-
-
-// POST
-exports.post_create_post = [
-    body("title", "Title must be specified")
-        .trim()
-        .isLength({min: 1})
-        .escape(),
-    body("body", "Body must be specified")
-        .trim()
-        .isLength({min: 1})
-        .escape(),
-
-    asyncHandler(async (req, res) => {
-        const errors = validationResult(req);
-
-        // make sure user has auth
-        const verify = await verifyJWT(req.token);
-
-        if (!verify.success) {
-            return res.json({
-                success: false,
-                error: "Not Authorized, please login.",
-            })
-        }
-
-        if (!errors.isEmpty()) {
-            return res.json({
-                success: true, 
-                title: req.body.title,
-                body: req.body.body,
-                errors: errors.array(),
-            })
-        } else {
-            const user = await User.findById(req.body.author, "_id").exec();
-
-            if (!user) {
-                return res.json({
-                    success: false, 
-                    error: "Could not find that user."
-                })
-            }   
-
-            // decode html contenet 
-            const decodedBody = he.decode(req.body.body);
-
-            const newpost = new Post({
-                title: req.body.title, 
-                timestamp: Date.now(),
-                // body: req.body.body,
-                body: decodedBody,
-                author: user._id,
-            })
-
-            // console.log(newpost);
-
-            await newpost.save();
-            
-            res.json({
-                success: true,
-                message: "Post created successfully"
-            })
-        }
-    })
-]
 
 
 // GET A SPECIFIC POST
@@ -173,7 +130,7 @@ exports.post_get = asyncHandler(async (req, res) => {
     const verify = await verifyJWT(req.token);
 
     if (!verify.success) {
-        return res.json({
+        return res.status(401).json({
             success: false, 
             error: "Not Authorized, please login.",
         })
@@ -182,9 +139,10 @@ exports.post_get = asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.id).populate("author", "username").exec()
     // const likes = await Like.find({"post": req.params.id}).populate("author", "username").exec();
 
+
     if (post === null) {
 
-        return res.json({
+        return res.status(404).json({
             success: true,
             error: "Couldn't find that post."
         })
@@ -212,7 +170,7 @@ exports.post_get = asyncHandler(async (req, res) => {
             }
         });
 
-        return res.json({
+        return res.status(200).json({
             success: true,
             liked,
             post: postsWithVirtuals,
@@ -220,27 +178,91 @@ exports.post_get = asyncHandler(async (req, res) => {
     }
 })
 
+
+
+// CREATE POST
+exports.post_create_post = [
+    body("title", "Title must be specified")
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+    body("body", "Body must be specified")
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+
+    asyncHandler(async (req, res) => {
+        const errors = validationResult(req);
+
+        // make sure user has auth
+        const verify = await verifyJWT(req.token);
+
+        if (!verify.success) {
+            return res.status(401).json({
+                success: false,
+                error: "Not Authorized, please login.",
+            })
+        }
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: true, 
+                title: req.body.title,
+                body: req.body.body,
+                errors: errors.array(),
+            })
+        } else {
+            const user = await User.findById(req.body.author, "_id").exec();
+
+            if (!user) {
+                return res.status(404).json({
+                    success: false, 
+                    error: "Could not find that user."
+                })
+            }   
+
+            // decode html contenet 
+            const decodedBody = he.decode(req.body.body);
+
+            const newpost = new Post({
+                title: req.body.title, 
+                timestamp: Date.now(),
+                body: decodedBody,
+                author: user._id,
+            })
+
+            await newpost.save();
+            
+            res.status(200).json({
+                success: true,
+                message: "Post created successfully"
+            })
+        }
+    })
+]
+
 // UPDATE GET 
 exports.update_post_get = asyncHandler(async (req, res) => {
     const verify = await verifyJWT(req.token);
 
+
     if (!verify.success) {
-        return res.json({
+        return res.status(401).json({
             success: false, 
             error: "Not Authorized, please login.",
         })
     } else {
         const post = await Post.findById(req.params.id, "title body").exec();
 
-        console.log(post);
+        console.log("UPDATE GET", post);
 
         if (post === null) {
-            res.json({
+            res.status(404).json({
                 success: false, 
                 error: "Could not find post",
             })
         } else {
-            res.json({
+            res.status(200).json({
                 success: true, 
                 post,
             })
@@ -250,18 +272,93 @@ exports.update_post_get = asyncHandler(async (req, res) => {
 
 // UPDATE POST
 exports.update_post_put = [
-
+    body("title", "Title must be specified")
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+    body("body", "Body must be specified")
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+  
     asyncHandler(async (req, res) => {
-        res.send("TODO UPDATE POST GET")
+        const verify = await verifyJWT(req.token);
+        const errors = validationResult(req);
+
+        if (!verify.success) {
+            return res.status(403).json({
+                success: false, 
+                error: "Not Authorized, please login.",
+            })
+        } else if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                error: "Form is not filled out correctly",
+                errors: errors.array(),
+            })
+        }
+
+        const originalpost = await Post.findById(req.params.id);
+
+        if (!originalpost) {
+            return res.status(404).json({
+                success: false,
+                error: "Post not found.",
+            })
+        } else {
+
+            const decodedBody = he.decode(req.body.body);
+
+            const newpost = new Post({
+                title: req.body.title,
+                timestamp: originalpost.timestamp,
+                body: decodedBody,
+                author: req.body.author,
+                _id: req.params.id,
+            })
+
+            await Post.findByIdAndUpdate(req.params.id, newpost, {})
+    
+            res.status(200).json({
+                success: true,
+                message: "Post Updated."
+            })   
+        }
     })
 ]
 
 // DELETE POST
 exports.post_delete = asyncHandler(async (req, res) => {
-    res.json({
-        success: true,
-        message: "TODO POST_DELETE",
-    })
+    const verify = await verifyJWT(req.token);
+
+    if (!verify.success) {
+        return res.status(401).json({
+            success: false, 
+            error: "Not Authorized, please login.",
+        })
+    }
+
+    const userid = verify?.authData.userPayload.id;
+    const post = await Post.findById(req.params.id).populate("author", "id").exec();
+
+    if (userid !== post.author.id) {
+        return res.status(403).json({
+            success: false,
+            error: "That is not your post to delete."
+        })
+    } else if (post === null) {
+        return res.status(404).json({
+            success: false,
+            error: "Post not found."            
+        })
+    } else {
+        // await Post.findByIdAndDelete(req.params.id).exec();
+
+        return res.status(200).json({
+            success: true, 
+            message: "Post deleted successfully"
+        })
+    }
 })
 
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// context hooks
 import { AuthProvider } from './context/AuthContext.jsx';
 
 import "@styles/index.scss"
@@ -21,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   // comment out React.StrictMode before Prod.
   // <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router}/>
+        <RouterProvider router={router}/>
     </AuthProvider>
   // </React.StrictMode>,
 )

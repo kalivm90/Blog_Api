@@ -2,7 +2,6 @@ import Navbar from "./navbar"
 import Flash from "./flash";
 import Footer from "./footer";
 import { useEffect, useState } from "react";
-import {useAuth} from "../context/AuthContext";
 
 import ProtectedRoute from "./protectedRoute";
 
@@ -20,33 +19,14 @@ const Layout = ({children, protectedRoute=false}) => {
     }, [url])
 
 
-    // // TEST for handling auth of protected routes
-    // const {logout, getAuthData} = useAuth();
-    // const [authorized, setAuthorized] = useState(false);
-
-    // useEffect(() => {
-    //     if (protectedRoute) {
-    //         const validate = getAuthData();
-
-    //         if (validate?.user) {
-    //             setAuthorized(true);
-    //         } else {
-    //             console.log("NOT");
-    //         }
-
-    //     } else {
-    //         setAuthorized(true);
-    //     }
-    // })
-    
-
     return (
         <main>
             <Navbar/>
-            {errorParam ? <Flash error={errorParam} /> : null}
-            {messageParam ? <Flash message={messageParam} /> : null}
-            {/* {children} */}
 
+            {/* Flash */}
+            {errorParam || messageParam ? <Flash error={errorParam} message={messageParam}/> : null}
+
+            {/* Handles Protected Routes */}
             {protectedRoute ? (
                 <ProtectedRoute>{children}</ProtectedRoute>
             ) : (

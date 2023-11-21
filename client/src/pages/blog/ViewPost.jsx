@@ -2,20 +2,23 @@
 // Comment it out in main.jsx to stop it from making multiple requests
 
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import DOMPurify from 'dompurify';
 
 import fetchApi from "../../util/fetchApi.js";
 import {useAuth} from "../../context/AuthContext.jsx"
 
 import Layout from "@components/layout";
+import Modal from '@components/modal.jsx';
 import "@styles/pages/ViewPost.scss";
 import { HandThumbsUp, HandThumbsUpFill, Share, Trash3, ArrowUpCircle } from "react-bootstrap-icons";
 
 
 const ViewPost = () => {
     const {postId} = useParams();
-    const {authData, logout} = useAuth();
+    const {getAuthData, logout} = useAuth();
+
+    const authData = getAuthData();
 
     const [post, setPost] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +31,11 @@ const ViewPost = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(null);
 
+    
+    const [showModal, setShowModal] = useState(false);
+
+    // this is this onClose prop for the Modal component
+    const handleClosePrompt = () => setShowModal(false);
 
     const handleImageClick = async () => {
         setIsLiked(!isLiked);
@@ -44,9 +52,9 @@ const ViewPost = () => {
         const response = await fetchApi(url, "POST");
 
         // MAY NEED TO DO SOME ERROR CHECKING HERE
-        setLikeCount(response?.likesTotal);
+        setLikeCount(response?.payload.likesTotal);
 
-        console.log("Debug-ViewPost:", response);
+        console.log("Debug-ViewPost:", response.payload);
     };
 
     useEffect(() => {
@@ -55,17 +63,19 @@ const ViewPost = () => {
             const url = import.meta.env.VITE_API_PATH + `/posts/${postId}`;
             const response = await fetchApi(url, "GET");
         
-            console.log(response);
 
-            if (response?.success && response?.post) {
-                setPost(response?.post);
-                setIsLiked(response?.liked)
-                setLikeCount(response?.post.likes.number);
-            } else if (response?.success && !response?.post) {
-                redirect(`/blog/dashboard?error=${response?.error || 'Something went wrong.'}`)
-            } else {
-                logout();
-                redirect(`/auth/login?error=${response?.error || 'Something went wrong.'}`)
+            if (response.res.ok) {
+                setPost(response?.payload?.post);
+                setIsLiked(response?.payload?.liked)
+                setLikeCount(response?.payload?.post.likes.number);
+            } else if (response.res.status === 404) {
+                // No Post Found, Redirect back to Dashboard with flash error
+                redirect(`/blog/dashboard?page=1&error=/viewPost: ${response.payload.error}`)
+            } else if (response.res.status === 401) {
+                // redirect to auth/login
+                logout()
+                redirect(`/auth/login?error=/viewPost: ${response.payload.error}`)
+
             }
             
 
@@ -75,8 +85,9 @@ const ViewPost = () => {
         res();
     }, [])
 
+
     return (
-        <Layout>
+        <Layout protectedRoute={true}>
             {isLoading ? (
                 <div className="ViewPost">
                     <h2>Getting post...</h2>
@@ -85,9 +96,34 @@ const ViewPost = () => {
                 <div className="ViewPost">
                     <h2>{post.title}</h2>
 
+                    {showModal && authData.user.username === post.author.username && (
+                        <Modal 
+                            title="Are you sure you want to delete this post?"
+                            url={`/posts/${postId}/delete`}
+                            post={post}
+                            onClose={handleClosePrompt}
+                        />
+                    )}
+
                     <section className="content">
                         <div className="topbar">
-                            <p>Posted by: {post.author.username}</p>
+
+                            <div className="username">
+                                <p>Posted by: </p>
+                                {authData.user.username === post.author.username ? (
+                                    <p id="same-username">
+                                        {post.author.username}  
+                                        <span id="white"> (self)</span>
+                                    </p>
+                                ) : (
+                                    <p id="dif-username">
+                                        {post.author.username}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* <p>Posted by: {post.author.username}</p> */}
+                            
                             <p>Time: {post.timestamp_format}</p>
                         </div>
 
@@ -106,22 +142,33 @@ const ViewPost = () => {
                                 <Share size={iconSize}/>
                                 <p>Share</p>
                             </div>
-                            {post.author._id === authData.id && (
+                            {post.author._id === authData.user.id && (
                                 <>
                                     <div className="update" onClick={() => {window.location.href = `/blog/${postId}/update`}}>
                                         <ArrowUpCircle size={iconSize}/>
                                         <p>Update</p>
                                     </div>
-                                    <div className='delete'>
+
+
+                                    <div className='delete' onClick={() => setShowModal(!showModal)}>
                                         <Trash3 size={iconSize}/>
                                         <p>Delete</p>
                                     </div>
+
+
+                                    {/* <div className='delete' onClick={() => {window.location.href = `/blog/${postId}/delete`}}>
+                                        <Trash3 size={iconSize}/>
+                                        <p>Delete</p>
+                                    </div> */}
+
+
+
                                 </>
                             )}
                         </div>
                     </section>
 
-                    <a href="/blog/dashboard">&#x2190; Back to Dashboard</a>
+                    <a href="/blog/dashboard?page=1">&#x2190; Back to Dashboard</a>
                 </div>
             )}
         </Layout>

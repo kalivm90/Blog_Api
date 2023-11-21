@@ -48,11 +48,10 @@ router.get(
 );
 
 
-router.get("/updateUsername", verifyRoute, authController.updateUsername_get);
 // route that handles frontend updating of username after the google auth succeeds 
 router.put("/updateUsername", verifyRoute, authController.updateUsername_put);
 
-
+// this handles the end of the google auth process by checking that the auth succeeded before authorizing 
 router.get("/verifyGoogleUser", verifyRoute, authController.verifyGoogleUser_get);
 
 module.exports = router
