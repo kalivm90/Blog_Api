@@ -19,7 +19,6 @@
     justify-content: center;
 
     .prompt-content {
-        // background: linear-gradient(rgb(0, 0, 0), rgb(8, 8, 8), rgb(22, 22, 22));
         background-color: $containerColor;
         box-shadow: -2px 4px 13px rgb(5, 5, 5);
         height: min-content;
@@ -127,6 +126,81 @@
                 }
             }
         }
+    }
 
+    @media (prefers-color-scheme: light) {
+        .prompt-content {
+            background-color: #e6e6e6;
+            box-shadow: -2px 4px 13px rgb(173, 173, 173);
+
+            .prompt-title h2 {
+                color: rgb(89, 89, 89);
+            }
+
+            .post-info {
+                div {
+                    h3 {
+                        color: rgb(75, 75, 75);
+                        font-weight: 700;
+                    }
+
+                    p {
+                        color: rgb(47, 47, 47);
+                    }
+                }
+            }
+
+            .action-wrapper {
+                button {
+                    color: white;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 1420px) {
+        .prompt-content {
+            width: 50%;
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    }
+
+    @media (max-width: 1000px) {
+        .prompt-content {
+            width: 80%;
+        }
+    }
+
+    @media (max-width: 660px) {
+        .prompt-content {
+            width: 90%;
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .post-info {
+                padding: 0 0 0 10px;
+                h3 {
+                    font-size: 1em;
+                }
+            }
+
+            .exit {
+                width: 30px;
+                height: 30px;
+            }
+
+            .action-wrapper {
+                button {
+                    font-size: 18px;
+                    height: 35px;
+                    width: 50%;
+                }
+            }
+        }
     }
 }

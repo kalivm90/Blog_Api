@@ -1,11 +1,8 @@
-1. Pagination for dashboard.
-2. Skelton styles for when pages are loading for dashboard and viewPost with skeleton module
-3. Convert more of the pages to "light mode"
+1. Skelton styles for when pages are loading for dashboard and viewPost with skeleton module
 
 
 
 STUFF DONE
 ---------------------------------------------------------------------------------------------
-
-1. Implemented new way of sending and recieving requests from the server to implement status code (should have started this way), refined the styles for smaller screens. 
-2. Added modal for deletion of posts
+1. Manually tested delete feauture and added functionality for all components for lightmode and smaller viewports.
+2. Added profile page with message that the project is no longer under development.

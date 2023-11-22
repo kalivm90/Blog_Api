@@ -7,7 +7,9 @@ import "@styles/components/navbar.scss";
 
 const Navbar = () => {
 
-    const {authData, logout} = useAuth();
+    const {getAuthData, logout} = useAuth();
+    const authData = getAuthData();
+
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -23,11 +25,11 @@ const Navbar = () => {
                 <h2>Blog</h2>
                 <img src={Image} alt="Api image"></img>
             </div>
-            {authData?.isAuthenticated || authData?.id ? (
+            {authData?.isAuthenticated ? (
                 <div className="links auth">
                     <Link to="/">Home</Link>
                     <Link to="/blog/dashboard?page=1">Dashboard</Link>
-                    <Link to="/profile">Profile</Link>
+                    <Link to={`/profile/${authData?.user.id}/view`}>Profile</Link>
                     <a href="#" onClick={handleLogout}>Logout</a>  
                 </div>
             ) : (

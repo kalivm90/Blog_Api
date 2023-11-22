@@ -352,7 +352,7 @@ exports.post_delete = asyncHandler(async (req, res) => {
             error: "Post not found."            
         })
     } else {
-        // await Post.findByIdAndDelete(req.params.id).exec();
+        await Post.findByIdAndDelete(req.params.id).exec();
 
         return res.status(200).json({
             success: true, 
