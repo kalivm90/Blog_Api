@@ -90,6 +90,7 @@ exports.register_post = [
     })   
 ]
 
+
 // local login post
 exports.login_post = [
     body("username", "Username must be specified")
@@ -104,7 +105,13 @@ exports.login_post = [
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);
 
+        // console.log("CONTROLLER REQ BODY", req.body);
+        // console.log("CONTROLLER REQ HEADERS", req.headers);
+        // console.log("CONTROLLER REQ METHOD", req.method);
+        // console.log("CONTROLLER REQ URL", req.url);
+
         const user = await User.findOne({username: req.body.username}).exec();
+
 
         if (!errors.isEmpty()) {
             return res.status(400).json({

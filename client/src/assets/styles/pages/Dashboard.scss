@@ -1,13 +1,10 @@
 // @import "@styles/index.scss";
 
 .Dashboard {
+    --button-margin-right: 44px;
+
     display: flex;
     flex-direction: column;
-
-    &.loading {
-        height: 100vh;
-        padding: 50px;
-    }
 
     .dashboard-container {
         padding: 20px;
@@ -23,7 +20,7 @@
                 flex-direction: column;
             }
 
-            button {
+            button, .skeleton-button {
                 height: 40px;
                 display: flex;
                 justify-content: center;
@@ -31,9 +28,7 @@
                 margin-right: 44px;
                 margin-top: 4px;
 
-                // @media (prefers-color-scheme: light) {
-                //     background-color: #ccc;
-                // }
+
                 @media (max-width: 1200px) {
                     margin-right: 20px;
                 }
@@ -133,6 +128,42 @@
                     }
                 }
             }
+        }
+    }
+
+
+    // FOR LOADING SCREEN
+    &.loading {
+        padding: 0;
+        height: 100%;
+
+        .skeleton-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            
+            .skeleton-title {
+                display: flex;
+                flex-direction: column;
+                width: 40%;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .skeleton-header {
+                .skeleton-title {
+                    width: 60%;
+                    background-color: red;
+                }
+            } 
+        }
+        @media (max-width: 600px) {
+            .skeleton-header {
+                .skeleton-title {
+                    width: 80%;
+                    background-color: red;
+                }
+            } 
         }
     }
 

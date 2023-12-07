@@ -13,6 +13,7 @@ import Modal from '@components/modal.jsx';
 import "@styles/pages/ViewPost.scss";
 import { HandThumbsUp, HandThumbsUpFill, Share, Trash3, ArrowUpCircle } from "react-bootstrap-icons";
 
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const ViewPost = () => {
     const {postId} = useParams();
@@ -82,7 +83,11 @@ const ViewPost = () => {
             setIsLoading(false);
         }
 
-        res();
+        // res();
+
+        setTimeout(() => {
+            res();
+        }, 1000)
     }, [])
 
 
@@ -90,7 +95,37 @@ const ViewPost = () => {
         <Layout protectedRoute={true}>
             {isLoading ? (
                 <div className="ViewPost">
-                    <h2>Getting post...</h2>
+                    {/* <h2>Getting post...</h2> */}
+                    <h2>
+                        <Skeleton width="50%" height={35}/>
+                    </h2>
+                    <section className='content skeleton'>
+
+                        <div className="topbar">
+                            <div className="username">
+                                <p>Posted by: </p>
+                                <Skeleton width={100} height={20}/>
+                            </div>
+                            <p>Time: <Skeleton width={100} height={20}/></p>
+                        </div>
+
+                        <div className="body skeleton">
+                            <Skeleton width="100%" height={200}/>
+                        </div>
+
+                        <div className="card-action">
+                            <div className="likes" onClick={handleImageClick}>
+                                <HandThumbsUp size={iconSize} className='likeAnimate'/>
+                                <p>Likes: <Skeleton width={50} height="100%"/></p>
+                            </div>
+                            <div className="share">
+                                <Share size={iconSize}/>
+                                <p>Share</p>
+                            </div>
+                        </div>
+
+                    </section>
+                    <a href="/blog/dashboard?page=1">&#x2190; Back to Dashboard</a>
                 </div>
             ) : (
                 <div className="ViewPost">
@@ -154,15 +189,6 @@ const ViewPost = () => {
                                         <Trash3 size={iconSize}/>
                                         <p>Delete</p>
                                     </div>
-
-
-                                    {/* <div className='delete' onClick={() => {window.location.href = `/blog/${postId}/delete`}}>
-                                        <Trash3 size={iconSize}/>
-                                        <p>Delete</p>
-                                    </div> */}
-
-
-
                                 </>
                             )}
                         </div>
@@ -175,40 +201,6 @@ const ViewPost = () => {
     )
 }
 
-                        // <div className="card-content" onClick={() => redirect(`/blog/${postId}/view`)}>
-                        //     <div className="card-container-left">
-                        //         <div className="card-title">
-                        //             <p>{post.author.username}</p>
-                        //             {/* LINK PROFILE HREF FROM MONGO METHOD */}
-                        //             <p>{post.timestamp_format}</p>
-                        //         </div>
-                        //         <div className="card-body">
-                        //             {/* Add body to post detail */}
-                        //             <h2>{post.title} hello nice veru jkaefbn awkwjfdba aljwdfsnsc</h2>
-                        //         </div>
-                        //     </div>
-
-                        //     <div className="card-container-right">
-                        //         <div className="body" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(post.body)}}>
-                                
-                        //         </div>
-                        //     </div>
-                        // </div>
-
-                        // <div className="card-action">
-                        //     <div className="comments">
-                        //         <ChatRight size={20}/>
-                        //         <p>Comments</p>
-                        //     </div>
-                        //     <div className="share">
-                        //         <Share/>
-                        //         <p>Share</p>
-                        //     </div>
-                        //     <div className="likes">
-                        //         <HandThumbsUp size={20}/>
-                        //         <p>Likes</p>
-                        //     </div>
-                        // </div>
 
 
 export default ViewPost;

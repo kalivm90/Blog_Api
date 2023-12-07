@@ -3,7 +3,7 @@ import fetchApi from "../../util/fetchApi.js";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext.jsx";
 
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css" 
 
 import Layout from "@components/layout";
@@ -15,6 +15,8 @@ import "@styles/pages/Dashboard.scss";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+
+import PostCardSkeleton from "../../components/postCardSkeleton.jsx";
 
 // NEED TO ADD LOGOUT TO DELETE LOCAL STORAGE IF AUTH FAILS
 
@@ -58,8 +60,10 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        fetchPosts(currentPage);
-        console.log(totalPages)
+        // fetchPosts(currentPage);
+        setTimeout(() => {
+            fetchPosts(currentPage);
+        }, 1000)
     }, [currentPage])
 
 
@@ -82,11 +86,31 @@ const Dashboard = () => {
       }, []);
 
 
+
     return (
         <Layout protectedRoute={true}>
             {isLoading ? (
                 <div className="Dashboard loading">
-                    <h2>Getting posts...</h2>
+                    {/* <h2>Getting posts...</h2> */}
+                        <div className="dashboard-container">
+
+                            <header className="skeleton-header">
+                                <div className="skeleton-title">
+                                    <Skeleton width="40%" height={40}></Skeleton>
+                                    <Skeleton width="70%" height={30}></Skeleton>
+                                </div>
+                                <span className="skeleton-button">
+                                    <Skeleton width={100} height={40}></Skeleton>
+                                </span>                    
+                            </header>
+                                
+                            <hr />
+                            <div className="dash-content">
+                                {Array.from({length: 4}, (_, index) => (
+                                    <PostCardSkeleton/>
+                                ))}
+                            </div>
+                        </div>
                 </div>
             ) : (
                 <div className="Dashboard">
@@ -143,40 +167,8 @@ const Dashboard = () => {
 
                 </div>
             )}
-            {/* <div className="Dashboard">
-                {isLoading ? (
-                    <h2>Checking Authorization...</h2>
-                ) : (
-                    <h3>Dashboard TODO</h3>
-                )}
-            </div> */}
         </Layout>
     )
 }
 
 export default Dashboard;
-
-
-    // useEffect(() => {
-    //     const req = async () => {
-    //         const url = import.meta.env.VITE_API_PATH + "/posts";
-
-    //         const response = await fetchApi(url, "GET");
-
-    //         if (response.res.ok) {
-    //            setPosts(response.payload.posts);
-    //         } else if (response.res.status === 401) {
-    //             logout();
-    //             redirect(`/auth/login?error=/dashboard: ${response?.payoad?.error}`);
-    //         }
-
-
-    //         setIsLoading(false);
-    //     }
-    //     req();
-
-    // //     // articial load time to test skeleton
-    // //     // setTimeout(() => {
-    // //     //     req();
-    // //     // }, 1000)
-    // }, [])

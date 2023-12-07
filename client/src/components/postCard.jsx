@@ -66,7 +66,7 @@ const PostCard = ({post, authData}) => {
                     <div className="card-title">
                         {/* Add body to post detail */}
                         <h2>{post.title}</h2>
-                        <hr />
+                        <hr/>
                     </div>
                 </div>
 

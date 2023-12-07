@@ -1,12 +1,12 @@
 const express = require("express");
 const createError = require('http-errors');
-const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const mongoose = require("mongoose")
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require('morgan');
 const debug = require("debug")("app")
+// Connects to mongoDB
+const mongoConfig = require("./mongoConfig");
 
 const app = express();
 
@@ -65,12 +65,21 @@ app.use(function(err, req, res, next) {
     })
 });
 
+/*******************************************************************
+*
+*   if you need new mongo connection config got to ./mongoConfig.js
+*   this is the old way
+*   
+********************************************************************/
+
+/* 
 const mongoDB = process.env.MONGODB_URI
 
 main().catch((err) => console.log(err))
 
 async function main() {
   await mongoose.connect(mongoDB);
-}
+} 
+*/
 
 module.exports = app;

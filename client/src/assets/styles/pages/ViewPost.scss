@@ -27,7 +27,6 @@ $containerWidth: 70%;
         height: max-content;
         width: $containerWidth;
         box-shadow: 2px 4px 13px rgb(0, 0, 0);
-        // margin-bottom: 100px;
         margin-bottom: 50px;
 
         display: flex;
@@ -82,6 +81,23 @@ $containerWidth: 70%;
 
                 &:hover p, &:hover svg {
                     color: $primary;
+                }
+            }
+        }
+
+        // SKELETON ---------------
+
+        &.skeleton {
+            .react-loading-skeleton {
+                --base-color: rgb(24, 24, 24);
+            }
+
+            .body {
+                padding: 0;
+                background-color: transparent;
+
+                .react-loading-skeleton {
+                    --base-color: black;
                 }
             }
         }

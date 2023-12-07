@@ -131,6 +131,21 @@ button {
   color: $primary;
 }
 
+// SKELETON
+.react-loading-skeleton {
+  --highlight-color: rgb(30, 30, 30);
+  --base-color: #252525;
+  
+
+
+  @media (prefers-color-scheme: light) {
+      --highlight-color: white;
+      --base-color: #e6e6e6;
+  
+
+  }
+}
+
 
 
 // animates the like button jumping

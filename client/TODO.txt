@@ -1,8 +1,7 @@
-1. Skelton styles for when pages are loading for dashboard and viewPost with skeleton module
-
+1. Finish testing for /auth and other backend routes 
+2. Get Backend ready for production with mdn checklist
 
 
 STUFF DONE
 ---------------------------------------------------------------------------------------------
-1. Manually tested delete feauture and added functionality for all components for lightmode and smaller viewports.
-2. Added profile page with message that the project is no longer under development.
+1. Loading skeletons done for main pages and testing for /auth and other backend routes started.
