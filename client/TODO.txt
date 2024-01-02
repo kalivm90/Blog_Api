@@ -1,7 +1,5 @@
-1. Finish testing for /auth and other backend routes 
-2. Get Backend ready for production with mdn checklist
+1. Get Backend ready for production with mdn checklist
 
 
 STUFF DONE
 ---------------------------------------------------------------------------------------------
-1. Loading skeletons done for main pages and testing for /auth and other backend routes started.

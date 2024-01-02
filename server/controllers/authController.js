@@ -147,7 +147,7 @@ exports.login_post = [
             });
 
         } else if (user?.googleId) {
-            res.status(401).json({success: false, error: "This is a Goolge profile, please login with Google."})
+            res.status(401).json({success: false, error: "This is a Google profile, please login with Google."})
         } else { 
             res.status(401).json({success: false, error: "You entered the wrong password"});
         }

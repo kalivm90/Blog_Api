@@ -8,7 +8,7 @@ const GoogleLoginButton = ({text}) => {
 
     const handleGoogleLogin = () => {
         // Construct the URL for Google OAuth authorization endpoint
-        const googleAuthUrl = `http://localhost:5000/auth/google`; // Replace with your server's endpoint
+        const googleAuthUrl = process.env.VITE_SERVER_AUTH + "/google";
     
         // Initiate the Google OAuth flow
             // In a new tab
@@ -51,9 +51,6 @@ const GoogleLoginButton = ({text}) => {
         >
             <img src={Google} alt="Google Image"></img>
             <span>{text} with Google</span>
-            {/* {buttonWidth && (
-                <p>Button Width: {buttonWidth}px</p>
-            )} */}
         </button>
     )
 }

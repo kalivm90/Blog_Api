@@ -5,7 +5,7 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require('morgan');
 const debug = require("debug")("app")
-// Connects to mongoDB
+// Connects to mongoDB (this just needs to be imported to run)
 const mongoConfig = require("./mongoConfig");
 
 const app = express();
@@ -32,14 +32,6 @@ app.use(express.urlencoded({ extended: false }));
 
 // setting up parser for incoming cookies
 app.use(cookieParser());
-
-
-/* 
-    MAY WANT TO ADD /api/ TO ALL ROUTES V1 OPTIONAL
-
-    app.use("api/v1/auth", authRouter);
-    app.use("api/v1/posts", postRouter);
-*/
 
 
 app.use("/auth", authRouter);

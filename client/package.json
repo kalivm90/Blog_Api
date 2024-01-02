@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run clean:dist && vite build",
+    "build:prod": "npm install && npm run build",
     "clean:dist": "rm -fr /dist",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview --port 5173 --host localhost"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
