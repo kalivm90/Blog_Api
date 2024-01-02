@@ -1,5 +1,10 @@
-1. Get Backend ready for production with mdn checklist
+1. Need to get 
 
 
 STUFF DONE
 ---------------------------------------------------------------------------------------------
+Server: 
+    1. Setup server for production
+
+Client: 
+    1. Added key to postCardSkeleton in dashboard that kept giving me warnings

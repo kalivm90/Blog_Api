@@ -3,10 +3,16 @@ const createError = require('http-errors');
 const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const logger = require('morgan');
-const debug = require("debug")("app")
 // Connects to mongoDB (this just needs to be imported to run)
 const mongoConfig = require("./mongoConfig");
+
+// Prod Config Imports
+const logger = require('morgan');
+const debug = require("debug")("app")
+const compression = require("compression");
+const helmet = require("helmet");
+
+
 
 const app = express();
 
@@ -29,9 +35,27 @@ app.use(passport.initialize());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 // setting up parser for incoming cookies
 app.use(cookieParser());
+
+
+// Production Config
+app.use(compression());
+app.use(helmet());
+
+                // Just in case rate limiting is needed
+/* 
+    // Set up rate limiter: maximum of twenty requests per minute
+    const RateLimit = require("express-rate-limit");
+
+    const limiter = RateLimit({
+        windowMs: 1 * 60 * 1000, 
+        max: 20,
+    });
+    
+    // Apply rate limiter to all requests
+    app.use(limiter); 
+*/
 
 
 app.use("/auth", authRouter);

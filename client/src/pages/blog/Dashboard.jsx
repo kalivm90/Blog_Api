@@ -28,7 +28,7 @@ const Dashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const [posts, setPosts] = useState({});
+    const [posts, setPosts] = useState([]);
 
     const authInfo = getAuthData();
 
@@ -107,7 +107,7 @@ const Dashboard = () => {
                             <hr />
                             <div className="dash-content">
                                 {Array.from({length: 4}, (_, index) => (
-                                    <PostCardSkeleton/>
+                                    <PostCardSkeleton key={index} />
                                 ))}
                             </div>
                         </div>
