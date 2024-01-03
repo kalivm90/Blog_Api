@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import * as yup from "yup";
@@ -77,6 +77,7 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
         mode: "onTouched"
     })
 
+
     async function formSubmit() {
         if (isValid) {
             const fieldValues = fields.reduce((values, field) => {
@@ -106,14 +107,15 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
                 console.log("DEBUG: ", authObj);
 
                 updateAuthData(authObj);
-                // redirect("/blog/dashboard?page=1");
+                redirect("/blog/dashboard?page=1");
             } else if (response.res?.status === 400) {
                 console.log("TODO authForm: if validation fails on server although the client side validation should catch it");
             } else {
                 logout();
                 console.log("DEBUG: ", response);
-                // redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
+                redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
                 // redirect(0);
+                window.location.reload();
             }
         }
     }
