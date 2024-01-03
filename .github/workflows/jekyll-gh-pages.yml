@@ -1,0 +1,60 @@
+name: Deploy Client to GitHub Pages
+
+on:
+  # Specify the branch you want to trigger the workflow
+  push:
+    branches: ["main"]
+
+  # Allows manual triggering from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Node.js and dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install project dependencies
+        run: npm install
+      - name: Build client
+        run: npm run build  # Adjust this command according to your build process
+        working-directory: ./client  # Set the working directory to your client folder
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: client-dist
+          path: ./client/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: client-dist
+          path: ./client-dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          # Deploy the content from the client/dist directory
+          folder: ./client-dist
