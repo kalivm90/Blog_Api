@@ -1,10 +1,23 @@
-1. Need to get 
+
+TODO
+---------------------------------------------------------------------------------------------
+
+    Server: 
+        1. Dont forget to change the Google oAuth changed to the correct origins and URIs
+
+    Client:  
+        1. Add warnings to pages that tells you if there is a server error. (layout preferably)
+        2. Find a better way to prevent flash from rendering on back navigating 
+
+
+
 
 
 STUFF DONE
 ---------------------------------------------------------------------------------------------
-Server: 
-    1. Setup server for production
 
-Client: 
-    1. Added key to postCardSkeleton in dashboard that kept giving me warnings
+    Server: 
+
+    Client: 
+        1. Added npm run build:prod to package.json
+        2. Removed issue with URL not updating properly 

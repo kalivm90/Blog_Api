@@ -21,33 +21,34 @@ const Layout = ({children, protectedRoute=false}) => {
     }, [url])
 
 
-    // Looks for search parameters when user navigates to a page already visited to prevent flash message from re-rendering
-    useEffect(() => {
-      const handlePopstate = window.onpopstate = (event) => {
-        // Array of key terms to watch
-        const flashKeys = ["error", "message"];
-        // URL parameter keys
-        const urlKeys = url.searchParams.keys();
+    // THIS WAS CAUSING ISSUES WITH THE URLS
 
-        // Loop through keys and delete them if they are included in the array of flash keys
-        for (const key of urlKeys) {
-            if (flashKeys.includes(key)) {
-                console.log(`Removed URL parameter "${key}" after detecting back button press`);
-                url.searchParams.delete(key);
-            }
-        }
+    // // Looks for search parameters when user navigates to a page already visited to prevent flash message from re-rendering
+    // useEffect(() => {
+    //   const handlePopstate = window.onpopstate = (event) => {
+    //     // Array of key terms to watch
+    //     const flashKeys = ["error", "message"];
+    //     // URL parameter keys
+    //     const urlKeys = url.searchParams.keys();
 
-        /// Update URL  
-        window.history.replaceState({}, '', url.toString()); 
+    //     // Loop through keys and delete them if they are included in the array of flash keys
+    //     for (const key of urlKeys) {
+    //         if (flashKeys.includes(key)) {
+    //             console.log(`Removed URL parameter "${key}" after detecting back button press`);
+    //             url.searchParams.delete(key);
+    //         }
+    //     }
 
-      };
+    //     /// Update URL  
+    //     window.history.replaceState({}, '', url.toString()); 
+
+    //   };
       
-      return () => {
-        handlePopstate(); 
-      };
+    //   return () => {
+    //     handlePopstate(); 
+    //   };
 
-    }, []);
-
+    // }, []);
 
 
     return (
