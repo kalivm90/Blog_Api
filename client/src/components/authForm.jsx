@@ -79,6 +79,9 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
 
 
     async function formSubmit() {
+
+        console.log(url, import.meta.env.VITE_SERVER_DOMAIN);
+
         if (isValid) {
             const fieldValues = fields.reduce((values, field) => {
                 values[field] = getValues(field);
@@ -88,8 +91,6 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
 
             const response = await fetchApi(url, method, fieldValues);
             
-
-
             console.log(response);
 
             if (response.res?.ok) {

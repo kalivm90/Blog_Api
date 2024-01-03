@@ -19,3 +19,4 @@ STUFF DONE
     Server: 
 
     Client: 
+        1. Changes title in index.html
