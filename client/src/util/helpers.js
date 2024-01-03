@@ -9,6 +9,7 @@ export function toTitleCase(str) {
 
 
 export function getDateOfExpiration(tokenExp) {
+  console.log(tokenExp)
   const [value, unit] = tokenExp.match(/\d+|[a-zA-Z]+/g);
   const timeSlip = 5;
   const expirationTimestamp = new Date();

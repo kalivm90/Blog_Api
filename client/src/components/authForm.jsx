@@ -87,32 +87,33 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
 
             const response = await fetchApi(url, method, fieldValues);
             
-            try {
 
-                console.log(response);
 
-                // if (response.res.ok) {
-                //     reset();
-    
-                //     const estimatedExpiration = getDateOfExpiration(response.tokenExp);
-                //     // request has user come as itself rather than in authData since it does not come from passport
-                //     let authObj = {
-                //         isAuthenticated: true,
-                //         user: response.user,
-                //         // date of token expiration
-                //         timeOfExp: estimatedExpiration,
-                //     }
-                //     updateAuthData(authObj)
-                //     redirect("/blog/dashboard?page=1");
-                // } else if (response.res.status === 400) {
-                //     console.log("TODO authForm: if validation fails on server although the client side validation should catch it");
-                // } else {
-                //     logout();
-                //     redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
-                //     redirect(0);
-                // }
-            } catch (e) {
-                redirect("/auth/login?error=authForm: Server Error");
+            console.log(response);
+
+            if (response.res?.ok) {
+                reset();
+
+                const estimatedExpiration = getDateOfExpiration(response.payload.tokenExp);
+                // request has user come as itself rather than in authData since it does not come from passport
+                let authObj = {
+                    isAuthenticated: true,
+                    user: response.payload.user,
+                    // date of token expiration
+                    timeOfExp: estimatedExpiration,
+                }
+                
+                console.log("DEBUG: ", authObj);
+
+                updateAuthData(authObj);
+                // redirect("/blog/dashboard?page=1");
+            } else if (response.res?.status === 400) {
+                console.log("TODO authForm: if validation fails on server although the client side validation should catch it");
+            } else {
+                logout();
+                console.log("DEBUG: ", response);
+                // redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
+                // redirect(0);
             }
         }
     }

@@ -49,8 +49,6 @@ const Dashboard = () => {
          }
 
          setIsLoading(false);
-
-         console.log(response);
     };
 
     // handles change for pagination component 
@@ -84,7 +82,6 @@ const Dashboard = () => {
           window.removeEventListener("popstate", handlePopstate);
         };
       }, []);
-
 
 
     return (
@@ -121,7 +118,7 @@ const Dashboard = () => {
                         <header>
 
                             <div className="dash-title">
-                                <h2>Welcome {authInfo.user.username}</h2>
+                                <h2>Welcome {authInfo.user?.username}</h2>
                                 <p>
                                     Here you can review your posts and profile.
                                 </p>

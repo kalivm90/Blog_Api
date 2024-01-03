@@ -29,7 +29,7 @@ const Navbar = () => {
                 <div className="links auth">
                     <Link to="/">Home</Link>
                     <Link to="/blog/dashboard?page=1">Dashboard</Link>
-                    <Link to={`/profile/${authData?.user.id}/view`}>Profile</Link>
+                    <Link to={`/profile/${authData?.user?.id}/view`}>Profile</Link>
                     <a href="#" onClick={handleLogout}>Logout</a>  
                 </div>
             ) : (
