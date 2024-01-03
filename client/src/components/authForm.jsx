@@ -114,8 +114,7 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
                 logout();
                 console.log("DEBUG: ", response);
                 redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
-                // redirect(0);
-                window.location.reload();
+                redirect(0);
             }
         }
     }
