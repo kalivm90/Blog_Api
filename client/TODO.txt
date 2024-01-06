@@ -1,3 +1,8 @@
+# MAKE SURE WHEN YOU PUSH AND RE-DEPLOY THAT YOU HAVE THE CORRECT CLIENT URL
+
+CLIENT = NETLIFY
+SERVER = RENDER
+
 
 TODO
 ---------------------------------------------------------------------------------------------
@@ -6,8 +11,7 @@ TODO
         1. Dont forget to change the Google oAuth changed to the correct origins and URIs
 
     Client:  
-        1. Add warnings to pages that tells you if there is a server error. (layout preferably)
-        2. Find a better way to prevent flash from rendering on back navigating 
+        1. Find a better way to prevent flash from rendering on back navigating 
 
 
 
@@ -19,4 +23,4 @@ STUFF DONE
     Server: 
 
     Client: 
-        1. Changes title in index.html
+        1. Client: changed some of the light/dark styles for some components, cleaned up some of the code. Server: Added message for server not responding

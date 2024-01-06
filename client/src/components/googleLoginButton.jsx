@@ -14,7 +14,7 @@ const GoogleLoginButton = ({text}) => {
             // In a new tab
         // window.open(googleAuthUrl, "_blank");
 
-            // In the same tab 
+        // In the same tab 
         window.location.href = googleAuthUrl;
     };
 

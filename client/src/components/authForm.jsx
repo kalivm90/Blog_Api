@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import * as yup from "yup";
@@ -104,8 +104,6 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
                     // date of token expiration
                     timeOfExp: estimatedExpiration,
                 }
-                
-                console.log("DEBUG: ", authObj);
 
                 updateAuthData(authObj);
                 redirect("/blog/dashboard?page=1");
@@ -113,8 +111,7 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
                 console.log("TODO authForm: if validation fails on server although the client side validation should catch it");
             } else {
                 logout();
-                console.log("DEBUG: ", response);
-                redirect(`/auth/login?error=authForm: ${response?.payload.error || 'Something went wrong'}`);
+                redirect("/auth/login?error=Server is not responding");
                 redirect(0);
             }
         }
