@@ -100,6 +100,12 @@ $containerWidth: 70%;
                     --base-color: black;
                 }
             }
+
+            @media (prefers-color-scheme: light) { 
+                .react-loading-skeleton, .body .react-loading-skeleton {
+                    --base-color: #e6e6e6;
+                }
+            }
         }
 
     }

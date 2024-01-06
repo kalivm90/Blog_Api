@@ -62,14 +62,6 @@ const PostForm = ({type, message, url}) => {
             logout();
             navigate(`/blog/dashboard?page=1&error=postForm: ${response?.payload.error}`);
         }
-        // if (response?.success) {
-        //     navigate(`/blog/dashboard?message=${response.message}`);
-        // } else {
-            
-        //     // logout();
-        //     // navigate(`/auth/login?error=${response.error}`)
-        //     console.log("ERROR", response);
-        // }
     }
 
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import fetchApi from "../../util/fetchApi.js"; 
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext.jsx";
 
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css" 
 
 import Layout from "@components/layout";

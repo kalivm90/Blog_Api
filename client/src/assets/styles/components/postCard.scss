@@ -183,6 +183,10 @@
         background-color: transparent;
         border: 2px solid black;
         margin-bottom: 50px;
+
+        @media (prefers-color-scheme: light) {
+            border-color: transparent;
+        }
     }
 }
 

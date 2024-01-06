@@ -16,7 +16,6 @@ const Flash = ({error, message}) => {
 
     const content = error ? formatURL(error) : formatURL(message) || "";
     
-    // console.log("FLASH", error || message);
 
     function formatURL(param) {
         if (param !== null) {

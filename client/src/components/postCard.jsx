@@ -1,7 +1,7 @@
 // create view post page 
 import "@styles/components/postCard.scss";
 import { useState } from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChatRight, HandThumbsUp, HandThumbsUpFill, Share } from "react-bootstrap-icons";
 import DOMPurify from 'dompurify';
 import fetchApi from "../util/fetchApi";

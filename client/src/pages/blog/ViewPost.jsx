@@ -13,7 +13,7 @@ import Modal from '@components/modal.jsx';
 import "@styles/pages/ViewPost.scss";
 import { HandThumbsUp, HandThumbsUpFill, Share, Trash3, ArrowUpCircle } from "react-bootstrap-icons";
 
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 
 const ViewPost = () => {
     const {postId} = useParams();
@@ -83,8 +83,8 @@ const ViewPost = () => {
             setIsLoading(false);
         }
 
-        // res();
 
+        // Artifical timeout for skeleton 
         setTimeout(() => {
             res();
         }, 1000)
@@ -95,7 +95,6 @@ const ViewPost = () => {
         <Layout protectedRoute={true}>
             {isLoading ? (
                 <div className="ViewPost">
-                    {/* <h2>Getting post...</h2> */}
                     <h2>
                         <Skeleton width="50%" height={35}/>
                     </h2>
@@ -156,8 +155,6 @@ const ViewPost = () => {
                                     </p>
                                 )}
                             </div>
-
-                            {/* <p>Posted by: {post.author.username}</p> */}
                             
                             <p>Time: {post.timestamp_format}</p>
                         </div>
