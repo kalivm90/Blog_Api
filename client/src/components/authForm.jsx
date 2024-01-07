@@ -111,7 +111,7 @@ const AuthForm = ({url, title, fields, method="POST", className}) => {
                 console.log("TODO authForm: if validation fails on server although the client side validation should catch it");
             } else {
                 logout();
-                redirect("/auth/login?error=Server is not responding");
+                redirect(`/auth/login?error=${response?.payload?.error ? response.payload.error : "Server is not responding"}`);
                 redirect(0);
             }
         }
